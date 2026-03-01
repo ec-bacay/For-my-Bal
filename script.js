@@ -13,7 +13,72 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => loading.remove(), 500);
     }, 800);
     
-    // Theme Toggle Functionality
+    // ============ PAGE NAVIGATION ============
+    const homePage = document.getElementById('homePage');
+    const letterPage = document.getElementById('letterPage');
+    const openBtn = document.getElementById('openLetterBtn');
+    const backButton = document.getElementById('backButton');
+    const backButtonBottom = document.getElementById('backButtonBottom');
+    
+    // Function to show home page
+    function showHomePage() {
+        homePage.classList.add('active-page');
+        letterPage.classList.remove('active-page');
+        document.body.style.overflow = 'auto'; // Ensure scrolling is enabled
+        window.scrollTo(0, 0); // Scroll to top
+    }
+    
+    // Function to show letter page
+    function showLetterPage() {
+        homePage.classList.remove('active-page');
+        letterPage.classList.add('active-page');
+        document.body.style.overflow = 'auto'; // Ensure scrolling is enabled
+        window.scrollTo(0, 0); // Scroll to top of letter
+        
+        // Animate letter paragraphs (optional subtle fade)
+        const paragraphs = document.querySelectorAll('.letter-paragraph');
+        paragraphs.forEach((para, index) => {
+            para.style.animation = 'none';
+            para.offsetHeight;
+            para.style.animation = `fadeInParagraph 0.5s ease forwards ${index * 0.05}s`;
+        });
+    }
+    
+    // Add fade animation for paragraphs
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInParagraph {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .letter-paragraph {
+            opacity: 0;
+            animation: fadeInParagraph 0.5s ease forwards;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Event Listeners
+    if (openBtn) {
+        openBtn.addEventListener('click', showLetterPage);
+    }
+    
+    if (backButton) {
+        backButton.addEventListener('click', showHomePage);
+    }
+    
+    if (backButtonBottom) {
+        backButtonBottom.addEventListener('click', showHomePage);
+    }
+    
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function(event) {
+        if (letterPage.classList.contains('active-page')) {
+            showHomePage();
+        }
+    });
+    
+    // ============ THEME TOGGLE ============
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
     
@@ -36,78 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
         body.classList.add('dark-mode');
     }
     
-    // Letter Button to Open Modal
-    const openBtn = document.getElementById('openLetterBtn');
-    const modal = document.getElementById('poemModal');
-    const closeBtn = document.getElementById('closeModal');
-    const modalBody = document.querySelector('.modal-body');
-    
-    // Open modal when button is clicked
-    openBtn.addEventListener('click', function() {
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
-        
-        // Reset scroll position to top
-        if (modalBody) {
-            modalBody.scrollTop = 0;
-        }
-        
-        // Reset and animate poem lines
-        const poemLines = document.querySelectorAll('.poem-line');
-        poemLines.forEach((line, index) => {
-            line.style.animation = 'none';
-            line.offsetHeight; // Trigger reflow
-            line.style.animation = `fadeInLine 0.5s ease forwards ${index * 0.1}s`;
-        });
-    });
-    
-    // Close modal when clicking X
-    closeBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Restore scrolling
-    });
-    
-    // Close modal when clicking outside the content
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    });
-    
-    // Handle escape key to close modal
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && modal.style.display === 'block') {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    });
-    
-    // Prevent body scroll when modal is open on touch devices
-    modal.addEventListener('touchmove', function(e) {
-        if (e.target === modal) {
-            e.preventDefault();
-        }
-    }, { passive: false });
-    
-    // Allow scrolling inside modal body
-    if (modalBody) {
-        // Stop propagation of wheel events so they only affect the modal body
-        modalBody.addEventListener('wheel', function(e) {
-            e.stopPropagation();
-        });
-        
-        // Handle touch events for mobile scrolling
-        modalBody.addEventListener('touchstart', function(e) {
-            // Let touch events pass through for scrolling
-        }, { passive: true });
-        
-        modalBody.addEventListener('touchmove', function(e) {
-            e.stopPropagation(); // Prevent modal from capturing touch moves
-        }, { passive: true });
-    }
-    
-    // Lazy load images with fade effect
+    // ============ IMAGE LOADING ============
     const images = document.querySelectorAll('.polaroid-image');
     images.forEach(img => {
         img.style.opacity = '0';
@@ -117,33 +111,17 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.opacity = '1';
         };
         
-        // If image is already cached
         if (img.complete) {
             img.style.opacity = '1';
         }
         
-        // Handle image loading errors
         img.onerror = function() {
             this.style.opacity = '1';
             this.src = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%25\' height=\'100%25\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%234A9FF5\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'white\' font-family=\'Arial\'%3EPhoto%3C/text%3E%3C/svg%3E';
         };
     });
     
-    // Responsive touch handling for polaroid cards
-    const polaroids = document.querySelectorAll('.polaroid-card');
-    polaroids.forEach(polaroid => {
-        polaroid.addEventListener('touchstart', function() {
-            this.style.transform = 'rotate(0deg) scale(1.02)';
-        });
-        
-        polaroid.addEventListener('touchend', function() {
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 200);
-        });
-    });
-    
-    // Subtle parallax effect for bubbles (optional, disabled on mobile for performance)
+    // ============ PARALLAX EFFECT (desktop only) ============
     if (window.innerWidth > 768) {
         document.addEventListener('mousemove', function(e) {
             const mouseX = e.clientX / window.innerWidth;
@@ -158,23 +136,43 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Add dynamic copyright year
+    // ============ DYNAMIC FOOTER ============
     const year = new Date().getFullYear();
     const footer = document.createElement('footer');
-    footer.innerHTML = `Made with love for Bal • Under the Sea • ${year}`;
-    document.querySelector('.container').appendChild(footer);
+    footer.innerHTML = `Made with love for Bal • ${year}`;
     
-    // Handle window resize events
+    // Add footer to both pages
+    const homeContainer = document.querySelector('#homePage .container');
+    const letterContainer = document.querySelector('#letterPage .letter-container');
+    
+    if (homeContainer) {
+        homeContainer.appendChild(footer.cloneNode(true));
+    }
+    
+    if (letterContainer) {
+        letterContainer.appendChild(footer.cloneNode(true));
+    }
+    
+    // ============ TOUCH OPTIMIZATIONS ============
+    const polaroids = document.querySelectorAll('.polaroid-card');
+    polaroids.forEach(polaroid => {
+        polaroid.addEventListener('touchstart', function() {
+            this.style.transform = 'rotate(0deg) scale(1.02)';
+        });
+        
+        polaroid.addEventListener('touchend', function() {
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        });
+    });
+    
+    // ============ RESIZE HANDLER ============
     let resizeTimeout;
     window.addEventListener('resize', function() {
-        // Debounce resize events
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(function() {
-            // Adjust any dynamic elements if needed
-            if (modal.style.display === 'block' && modalBody) {
-                // Ensure modal body is still scrollable
-                modalBody.style.maxHeight = window.innerHeight > 600 ? 'calc(80vh - 100px)' : 'calc(70vh - 80px)';
-            }
+            // Any resize adjustments if needed
         }, 250);
     });
 });
