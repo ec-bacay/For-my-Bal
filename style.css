@@ -18,7 +18,21 @@ body {
     line-height: 1.6;
 }
 
-/* Ocean Background */
+/* ============ PAGE TRANSITION SYSTEM ============ */
+.page {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.page.active-page {
+    display: block;
+    opacity: 1;
+}
+
+/* ============ OCEAN BACKGROUND ============ */
 .ocean {
     position: fixed;
     top: 0;
@@ -82,7 +96,6 @@ body {
     border-radius: 50%;
 }
 
-/* Responsive bubble sizes */
 .bubble:nth-child(1) { left: 10%; width: 30px; height: 30px; animation-duration: 12s; }
 .bubble:nth-child(2) { left: 20%; width: 50px; height: 50px; animation-duration: 18s; animation-delay: 2s; }
 .bubble:nth-child(3) { left: 35%; width: 25px; height: 25px; animation-duration: 15s; animation-delay: 1s; }
@@ -164,12 +177,12 @@ body {
 .coral-1 { left: 60%; transform: scaleX(-1); }
 .coral-2 { left: 70%; height: clamp(50px, 6vh, 60px); }
 
-/* Theme Toggle Button - Responsive */
+/* ============ THEME TOGGLE ============ */
 .theme-toggle {
     position: fixed;
     top: clamp(10px, 3vw, 20px);
     right: clamp(10px, 3vw, 20px);
-    z-index: 100;
+    z-index: 1000;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.3);
@@ -191,7 +204,7 @@ body {
     background: rgba(255, 255, 255, 0.3);
 }
 
-/* Main Container - Responsive */
+/* ============ HOME PAGE CONTAINER ============ */
 .container {
     position: relative;
     z-index: 10;
@@ -216,7 +229,7 @@ body {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
-/* Header Styles - Responsive */
+/* Header */
 .header {
     text-align: center;
     margin-bottom: clamp(30px, 8vw, 50px);
@@ -257,19 +270,17 @@ h1 {
     font-family: 'Dancing Script', cursive;
 }
 
-/* Light mode subtitle */
 .light-mode .subtitle {
     color: #003366;
 }
 
-/* Dark mode subtitle - no glow, just elegant color */
 .dark-mode .subtitle {
     color: #B0E0FF;
     text-shadow: none;
     opacity: 0.95;
 }
 
-/* Section Titles - Responsive */
+/* Section Titles */
 .section-title {
     font-family: 'Playfair Display', serif;
     font-size: clamp(1.8rem, 6vw, 2.5rem);
@@ -279,14 +290,8 @@ h1 {
     word-wrap: break-word;
 }
 
-.light-mode .section-title { 
-    color: #003366; 
-}
-
-.dark-mode .section-title { 
-    color: #B0E0FF;
-    text-shadow: none;
-}
+.light-mode .section-title { color: #003366; }
+.dark-mode .section-title { color: #B0E0FF; }
 
 .section-subtitle {
     text-align: center;
@@ -296,19 +301,10 @@ h1 {
     font-style: italic;
 }
 
-/* Light mode section subtitle */
-.light-mode .section-subtitle {
-    color: #1A4A7A;
-}
+.light-mode .section-subtitle { color: #1A4A7A; }
+.dark-mode .section-subtitle { color: #A0C0E0; }
 
-/* Dark mode section subtitle - no glow */
-.dark-mode .section-subtitle {
-    color: #A0C0E0;
-    text-shadow: none;
-    opacity: 0.9;
-}
-
-/* Polaroid Gallery - Fully Responsive */
+/* ============ POLAROID GALLERY ============ */
 .photo-gallery {
     margin: clamp(40px, 10vw, 60px) 0;
 }
@@ -338,10 +334,10 @@ h1 {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Random rotation for each polaroid */
 .polaroid-card:nth-child(1) { --rotation: -2deg; }
 .polaroid-card:nth-child(2) { --rotation: 3deg; }
 .polaroid-card:nth-child(3) { --rotation: -1deg; }
+.polaroid-card:nth-child(4) { --rotation: 2deg; }
 
 .polaroid-card:hover {
     transform: rotate(0deg) scale(1.02);
@@ -376,18 +372,10 @@ h1 {
     padding: clamp(5px, 2vw, 10px) 0;
 }
 
-/* Light mode polaroid caption */
-.light-mode .polaroid-caption {
-    color: #333;
-}
+.light-mode .polaroid-caption { color: #333; }
+.dark-mode .polaroid-caption { color: #E0E0FF; }
 
-/* Dark mode polaroid caption - no glow */
-.dark-mode .polaroid-caption {
-    color: #E0E0FF;
-    text-shadow: none;
-}
-
-/* Letter Section - Responsive */
+/* ============ LETTER BUTTON ============ */
 .letter-section {
     text-align: center;
     margin: clamp(50px, 12vw, 80px) 0;
@@ -430,262 +418,144 @@ h1 {
     background: linear-gradient(145deg, #2C7AD9, #1A5FAA);
 }
 
-.open-letter-btn:active {
-    transform: translateY(-2px);
+/* ============ LETTER PAGE - FULLY SCROLLABLE ============ */
+#letterPage {
+    background: transparent;
 }
 
-/* ============ FIXED MODAL STYLES - PROPER SCROLLING ============ */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 20, 40, 0.85);
-    backdrop-filter: blur(5px);
-    overflow: hidden; /* Changed from 'auto' to 'hidden' */
-}
-
-.modal-content {
+.letter-container {
+    max-width: min(800px, 90%);
+    margin: clamp(20px, 5vw, 40px) auto;
+    padding: clamp(20px, 4vw, 40px);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     position: relative;
-    margin: 20px auto;
-    width: min(95%, 800px);
-    max-height: calc(100vh - 40px); /* Viewport height minus margins */
-    border-radius: clamp(15px, 4vw, 20px);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-    animation: slideIn 0.4s ease;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    overflow: hidden; /* Hide overflow on modal content */
-    display: flex;
-    flex-direction: column; /* Stack children vertically */
-}
-
-/* Light mode modal */
-.light-mode .modal-content {
-    background: linear-gradient(145deg, #E6F3FF, #B0E0FF);
-}
-
-/* Dark mode modal */
-.dark-mode .modal-content {
-    background: linear-gradient(145deg, #1A2F4A, #0F1F33);
-    border-color: rgba(100, 150, 255, 0.3);
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateY(-30px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: clamp(15px, 4vw, 20px) clamp(20px, 5vw, 30px);
-    border-bottom: 2px solid #4A9FF5;
-    background: rgba(255, 255, 255, 0.1);
-    flex-shrink: 0; /* Prevent header from shrinking */
-}
-
-.modal-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.5rem, 5vw, 2rem);
-    word-wrap: break-word;
-    margin: 0; /* Remove default margin */
-    color: #003366;
-}
-
-/* Light mode modal header */
-.light-mode .modal-header h2 {
-    color: #003366;
-}
-
-/* Dark mode modal header */
-.dark-mode .modal-header h2 {
-    color: #B0E0FF;
-    text-shadow: none;
-}
-
-.close-button {
-    background: none;
-    border: none;
-    font-size: clamp(2rem, 6vw, 2.5rem);
-    cursor: pointer;
-    width: clamp(40px, 8vw, 50px);
-    height: clamp(40px, 8vw, 50px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.3s;
-    position: absolute;
-    top: clamp(10px, 3vw, 15px);
-    right: clamp(10px, 3vw, 15px);
-    line-height: 1;
-    padding: 0;
     z-index: 10;
+    border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
-/* Light mode close button */
-.light-mode .close-button {
-    color: #666;
+.dark-mode .letter-container {
+    background: rgba(10, 20, 40, 0.9);
+    border-color: rgba(100, 150, 255, 0.2);
 }
 
-/* Dark mode close button */
-.dark-mode .close-button {
-    color: #A0C0E0;
+/* Back Button */
+.back-button {
+    background: rgba(74, 159, 245, 0.2);
+    border: 2px solid rgba(74, 159, 245, 0.5);
+    color: #4A9FF5;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
+    font-weight: 600;
+    display: inline-block;
 }
 
-.close-button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: #FF6B6B;
-    transform: rotate(90deg);
+.dark-mode .back-button {
+    color: #7FFFD4;
+    border-color: #7FFFD4;
+    background: rgba(127, 255, 212, 0.1);
 }
 
-.modal-body {
-    padding: clamp(20px, 5vw, 30px);
-    overflow-y: auto; /* THIS ENABLES SCROLLING */
-    flex-grow: 1; /* Take up remaining space */
-    max-height: calc(80vh - 100px); /* Fallback */
+.back-button:hover {
+    background: #4A9FF5;
+    color: white;
+    transform: translateX(-5px);
 }
 
-/* Poem Text Styles - Responsive */
-.poem-text {
+.dark-mode .back-button:hover {
+    background: #7FFFD4;
+    color: #0A1A3A;
+}
+
+.back-bottom {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.back-button.secondary {
+    background: transparent;
+    border: 2px solid rgba(74, 159, 245, 0.3);
+}
+
+/* Birthday Letter Styling */
+.birthday-letter {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(1rem, 3.5vw, 1.2rem);
     line-height: 1.8;
+    color: #003366;
+}
+
+.dark-mode .birthday-letter {
+    color: #E0E0FF;
+}
+
+.letter-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px dashed #4A9FF5;
+}
+
+.letter-header h2 {
+    font-size: clamp(1.8rem, 5vw, 2.2rem);
+    font-family: 'Dancing Script', cursive;
+    margin-bottom: 10px;
+}
+
+.date {
+    font-style: italic;
+    opacity: 0.8;
+    font-size: 1rem;
+}
+
+.letter-body {
+    margin-bottom: 40px;
+}
+
+.letter-paragraph {
+    margin-bottom: 20px;
+    font-size: clamp(1rem, 3.5vw, 1.2rem);
     text-align: left;
     white-space: pre-line;
 }
 
-/* Light mode poem text */
-.light-mode .poem-text {
-    color: #003366;
-}
-
-/* Dark mode poem text */
-.dark-mode .poem-text {
-    color: #E0E0FF;
-    text-shadow: none;
-    opacity: 1;
-}
-
-.poem-line {
-    margin-bottom: clamp(8px, 2vh, 10px);
-    opacity: 0;
-    animation: fadeInLine 0.5s ease forwards;
-}
-
-/* Dark mode poem lines */
-.dark-mode .poem-line {
-    text-shadow: none;
-    color: #E0E0FF;
-}
-
-@keyframes fadeInLine {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.poem-signature {
-    margin-top: clamp(30px, 8vh, 50px);
+.letter-footer {
     text-align: right;
-    font-style: italic;
+    margin-top: 50px;
+    padding-top: 30px;
     border-top: 2px dashed #4A9FF5;
-    padding-top: clamp(20px, 5vh, 30px);
-}
-
-/* Light mode signature */
-.light-mode .poem-signature p {
-    color: #1A4A7A;
-}
-
-/* Dark mode signature */
-.dark-mode .poem-signature p {
-    color: #B0E0FF;
-    text-shadow: none;
+    font-style: italic;
 }
 
 .signature {
     font-family: 'Dancing Script', cursive;
-    font-size: clamp(1.8rem, 6vw, 2.2rem);
-    margin: 10px 0;
-}
-
-/* Light mode signature name */
-.light-mode .signature {
+    font-size: clamp(2rem, 6vw, 2.5rem);
+    margin-top: 10px;
     color: #4A9FF5;
 }
 
-/* Dark mode signature name */
 .dark-mode .signature {
     color: #7FFFD4;
-    text-shadow: none;
 }
 
-/* Scrollbar Styling - Make it visible and usable */
-.modal-body::-webkit-scrollbar {
-    width: 10px;
-}
-
-.modal-body::-webkit-scrollbar-track {
-    background: rgba(74, 159, 245, 0.1);
-    border-radius: 5px;
-}
-
-.modal-body::-webkit-scrollbar-thumb {
-    background: #4A9FF5;
-    border-radius: 5px;
-    border: 2px solid transparent;
-}
-
-.modal-body::-webkit-scrollbar-thumb:hover {
-    background: #2C7AD9;
-}
-
-/* Firefox scrollbar support */
-.modal-body {
-    scrollbar-width: thin;
-    scrollbar-color: #4A9FF5 rgba(74, 159, 245, 0.1);
-}
-
-/* Footer - Responsive */
+/* ============ FOOTER ============ */
 footer {
     text-align: center;
     margin-top: clamp(30px, 8vw, 50px);
     padding: clamp(15px, 4vw, 20px);
     font-size: clamp(0.8rem, 3vw, 1rem);
     border-top: 2px solid rgba(74, 159, 245, 0.3);
-    word-wrap: break-word;
 }
 
-/* Light mode footer */
-.light-mode footer {
-    color: #1A4A7A;
-    opacity: 0.8;
-}
+.light-mode footer { color: #1A4A7A; }
+.dark-mode footer { color: #A0C0E0; }
 
-/* Dark mode footer */
-.dark-mode footer {
-    color: #A0C0E0;
-    opacity: 0.9;
-    text-shadow: none;
-}
-
-/* Loading Animation */
+/* ============ LOADING ============ */
 .loading {
     position: fixed;
     top: 0;
@@ -707,10 +577,10 @@ footer {
     pointer-events: none;
 }
 
-/* Small Mobile Devices */
+/* ============ RESPONSIVE ADJUSTMENTS ============ */
 @media (max-width: 480px) {
-    .container {
-        width: 98%;
+    .container, .letter-container {
+        width: 95%;
         padding: 15px;
     }
     
@@ -718,35 +588,21 @@ footer {
         max-width: 280px;
     }
     
-    .modal-content {
-        margin: 10px auto;
-        max-height: calc(100vh - 20px);
-    }
-    
-    .modal-body {
-        padding: 15px;
-        max-height: calc(70vh - 80px);
-    }
-    
     .open-letter-btn {
         min-width: 180px;
         padding: 12px 25px;
+        font-size: 1rem;
+    }
+    
+    .back-button {
+        padding: 8px 20px;
+        font-size: 0.9rem;
     }
 }
 
-/* Landscape Mode */
 @media (max-height: 600px) and (orientation: landscape) {
-    .modal-content {
-        margin: 10px auto;
-        max-height: calc(100vh - 20px);
-    }
-    
-    .modal-body {
-        max-height: calc(60vh - 80px);
-    }
-    
     .polaroid-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
     
     .polaroid-card {
@@ -754,29 +610,9 @@ footer {
     }
 }
 
-/* Tablet Devices */
 @media (min-width: 768px) and (max-width: 1024px) {
     .polaroid-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .container {
-        max-width: 90%;
-    }
-}
-
-/* Large Screens */
-@media (min-width: 1400px) {
-    html {
-        font-size: 18px;
-    }
-    
-    .container {
-        max-width: 1200px;
-    }
-    
-    .polaroid-grid {
-        gap: 40px;
     }
 }
 
@@ -793,26 +629,9 @@ footer {
     .polaroid-card:active {
         transform: rotate(0deg) scale(1.02);
     }
-    
-    .open-letter-btn:active {
-        transform: translateY(-2px);
-    }
 }
 
-/* High Contrast Mode Support */
-@media (prefers-contrast: high) {
-    .light-mode .container {
-        background: white;
-        border: 3px solid #003366;
-    }
-    
-    .dark-mode .container {
-        background: black;
-        border: 3px solid #7FFFD4;
-    }
-}
-
-/* Reduced Motion Preferences */
+/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
     * {
         animation-duration: 0.01ms !important;
